@@ -1,0 +1,58 @@
+#include <iostream>
+#include<bits/stdc++.h>
+#include<chrono>
+
+using namespace std;
+bool flag = false;
+bool place(int k,int j,int x[])
+{
+    if(k==1)
+        return true;
+    for(int q=0;q<k;q++)
+    {   
+        if(j==x[q-1]||abs(k-q)==abs(j- x[q-1] ))
+            return false;
+    }
+    return true;
+}
+void print(int x[],int n)
+{   
+    cout<<"Possible Soluton: ";
+    for(int i=0;i<n;i++)
+        cout<<x[i]<<" ";
+    cout<<"\n";
+    flag=true;
+}
+
+void nQueens(int k,int n, int x[])
+{
+    if(flag)
+        return;
+    for(int j=1;j<=n;j++)
+    if(place(k,j,x))
+    {
+        x[k-1]=j;
+        if(k==n)
+            print(x,n);
+            if(flag)
+                return;
+        else
+            nQueens(k+1,n,x);
+    }
+}
+int main()
+{
+    int n;
+    cout<<"Enter number of queens: ";
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++)
+    {
+        arr[i]=-1;
+    }
+    auto start = chrono::high_resolution_clock::now();
+    nQueens(1,n,arr);
+    auto stop = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(stop - start);
+    cout << "\nTime: " << duration.count() << " ns" << endl;
+}

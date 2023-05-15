@@ -1,0 +1,77 @@
+#include <iostream>
+#include<chrono>
+int step =0;
+using namespace std;
+int partiton(int arr[],int l,int h)
+{
+    int pivot = arr[l];
+    int i = l-1;
+    int j = h+1;
+    step+=3;
+    while(true)
+    {
+        do{
+            i++;
+            step+=2;
+        }while(arr[i]<pivot);
+        do{
+            j--;
+            step+=2;
+        }while(arr[j]>pivot);
+        if(i>=j) return j;
+        step++;
+        swap(arr[i],arr[j]);
+        step+=3;
+    }
+}
+void qSort(int arr[],int l,int r)
+{
+    
+    
+    if(l<r)
+    {
+        int p = partiton(arr,l,r);
+        step+=2;
+        qSort(arr,l,p);
+        qSort(arr,p+1,r);
+    }
+}
+void pass(int arr[],int n)
+{
+    auto start = chrono::high_resolution_clock::now();
+    qSort(arr, 0, n - 1);
+    auto stop = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(stop - start);
+    step+=5;
+    cout<<"Sorted Array:\n";
+    step++;
+    for(int i =0;i<n;i++)
+    {
+        cout<<arr[i]<<",";
+        step+=2;
+    }
+    cout<<endl;
+    cout << "Time: " << duration.count() << " ns" << endl;
+    step+=2;
+    cout<<"Steps: "<<step;
+    cout<<endl;
+}
+
+
+int main()
+{
+    srand(time(0));
+    int n1=10;
+    int n2=20;
+
+
+    int arr10[]={10939,19931,25990,29232,42979,50081,56026,69670,78275,95774};
+    int arr20[]={3839,12911,13302,20692,21974,23899,24307,28641,30332,40518,46075,48725,60336,65423,69670,74752,81193,86796,93969,95171};
+    step+=16;
+    cout<<endl;
+    cout<<endl;
+    pass(arr10,n1);
+    pass(arr20,n2);
+
+    return 0;
+}
